@@ -5,8 +5,11 @@ import wsgiref.handlers
 
 from google.appengine.api import users
 from google.appengine.ext import webapp
+from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
+
+import model
 
 class BaseRequestHandler(webapp.RequestHandler):
     def generateBasePage(self,template_name,values={}):
@@ -24,7 +27,12 @@ class BaseRequestHandler(webapp.RequestHandler):
 
 class MainPageHandler(BaseRequestHandler):
     def get(self):
-        self.generateBasePage('main.html')
+        query = model.Blog.all().order('-createTimeStamp')
+        blogs = query.fetch(10)
+        template_values = {
+              'blogs': blogs
+        }
+        self.generateBasePage('main.html',template_values)
         return
 
 
