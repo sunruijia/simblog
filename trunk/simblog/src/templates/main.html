@@ -1,44 +1,20 @@
 {% extends "index.html" %}
 {% block content %}
 
-{% if not posts or not posts|length %}
+{% if not blogs or not blogs|length %}
 	<h2>No hay entradas</h2>
 {% else %}
 
-{% for post in posts %}
-<div class="post">
-	<h2 class="title"><a href="/post/{{ post.permalink }}">{{ post.title }}</a></h2>
+{% for blog in blogs %}
+<div class="blog">
+	<h2 class="title"><a href="/post/">{{ blog.title }}</a></h2>
 	<div class="entry">
-		{% if post.excerpt %}<h3>{{ post.excerpt }}</h3>{% endif %}
-		{{ post.content|linebreaks }}
+		{{ blog.content|linebreaks }}
 	</div>
-	<p class="meta">Publicado el {{post.published|date:"d/m/Y H:i"}} &nbsp;|&nbsp; {% for cat in post.categories %}
-		<a href="/category/{{ cat.category_url}}">{{ cat.category_name }}</a>
-		{% endfor %} &nbsp;|&nbsp; <a href="/post/{{ post.permalink }}/#comments">{{ post.num_comments }} comentario{{ post.num_comments|pluralize }}</a>{% if user %} | <a href="/admin/posts/edit?id={{ post.key }}" class="edit">Edit</a> {% endif %}
-		</p>
+	<p class="meta">发表时间{{blog.createTimeStamp|date:"d/m/Y H:i"}} &nbsp;|&nbsp; 
+	</p>
 </div>
-
-
-	{% endfor %}
-	{% if navigation.previous or navigation.next %}
-	<div id="nav_post">
-		{% if navigation.previous %}
-		<div id="nav_prev">
-			<a href="{{navigation.previous}}" class="nav">Siguientes >></a>
-		</div>
-		{% endif %}
-
-		{% if navigation.next %}	
-		<div id="nav_next">
-				<a href="{{navigation.next}}" class="nav"><< Anteriores</a>
-		</div>
-		{% endif %}	
-	
-	
-	
-	</div>
-	
-	{% endif %}
+{% endfor %}
 {% endif %}
 
 {% block comments %}
