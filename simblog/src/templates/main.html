@@ -1,25 +1,29 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% block content %}
 
-{% if not blogs or not blogs|length %}
-	<h2>No hay entradas</h2>
+{% if not blogs %}
+	<h2>No blogs</h2>
 {% else %}
 
 {% for blog in blogs %}
-<div class="blog">
-	<h2 class="title"><a href="/post/">{{ blog.title }}</a></h2>
-	<div class="entry">
-		{{ blog.content|linebreaks }}
-	</div>
-	<p class="meta">发表时间{{blog.createTimeStamp|date:"d/m/Y H:i"}} &nbsp;|&nbsp; 
-	</p>
+<div class="ctop"></div>
+<div class="box">
+<div class="nifty">
+   <h2>
+     <a href="/{{blog.link }}" rel="bookmark" >{{blog.title}}</a> 
+     <span class="date">{{blog.createTimeStamp|date:"F jS, Y"}}</span>
+    </h2>
+</div>
+  {{blog.content|linebreaks}}
+<div class="cbottom"></div>
+<div class="space"></div>
 </div>
 {% endfor %}
 {% endif %}
 
 {% block comments %}
 
-{% endblock %}
+{% endblock comments%}
 
 
-{% endblock %}
+{% endblock content%}
