@@ -23,7 +23,7 @@ class BasePublicBlog(main.BaseRequestHandler):
     def post(self):
         title1,content1 = (self.request.get(item) for item in ('title', 'content'))
         blogEntity = model.Blog(title = title1, content = content1, createTimeStamp = datetime.datetime.now())
-        blogEntity.put()
+        blogEntity.publish()
         self.redirect('/')
 
 def Main():
