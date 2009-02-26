@@ -27,12 +27,14 @@ class BlogSystem(db.Model):
     systemURL = db.StringProperty(multiline=False)
 
 def initBlogSystemData():
+    global blogSystem
     blogSystem = BlogSystem(key_name = 'simblog')
     blogSystem.title = 'Your blog title'
     blogSystem.systemURL = "http://" + os.environ['HTTP_HOST']
     blogSystem.put()
     
 def createBlogSystem():
+    global blogSystem
     blogSystem = BlogSystem.get_by_key_name('simblog')
     if not blogSystem:
         initBlogSystemData()

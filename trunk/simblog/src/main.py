@@ -8,8 +8,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
-
 import model
+from model import Blog
 
 class BaseRequestHandler(webapp.RequestHandler):
     def generateBasePage(self,template_name,values={}):
@@ -24,21 +24,35 @@ class BaseRequestHandler(webapp.RequestHandler):
         html = template.render(path, values)
         self.response.out.write(html)
         return
+    def param(self, name, **kw):
+        return self.request.get(name, **kw)
 
 class MainPageHandler(BaseRequestHandler):
     def get(self):
-        query = model.Blog.all().order('-createTimeStamp')
-        blogs = query.fetch(10)
-        template_values = {
+        blogid=self.param('p')
+        if(blogid):
+            blogid=int(blogid)
+            blogs = Blog.all().filter('blog_id =', blogid).fetch(1)
+            blog= blogs[0]
+            template_values = {'blog':blog, 'blogsystem':model.blogSystem}
+            self.generateBasePage('singleblog.html', template_values)
+        else:
+            query = Blog.all().order('-createTimeStamp')
+            blogs = query.fetch(10)
+            template_values = {
               'blogs': blogs
-        }
-        self.generateBasePage('main.html',template_values)
+             }
+            self.generateBasePage('main.html',template_values)
+        return
+
+class singleBlog(BaseRequestHandler):
+    def get(self,blogid=None):
+
         return
 
 
-
 def Main():
-    application = webapp.WSGIApplication([(r'/(\d+)$', MainPageHandler),('/', MainPageHandler)], debug=True)
+    application = webapp.WSGIApplication([('/', MainPageHandler)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
     return
 
