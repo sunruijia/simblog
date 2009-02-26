@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %} {{blog.title}} - {{blogsystem.title}} {% endblock title%}
+{% block content%}
+
+<div class="ctop"></div>
+<div class="box">
+
+{% if blog %}
+
+<div id="post-{{blog.key}}">
+<div class="nifty"><h2><a href="/{{blog.selfLink }}" rel="bookmark" title="Link to {blog.title}}">{{blog.title}}</a> <span class="date">{{blog.createTimeStamp|date:"F jS, Y"}}</span></h2></div>
+
+{{ blog.content }}
+
+
+</div>
+</div>
+<div class="cbottom"></div>
+<div class="space"></div>
+{% else %}
+No blog
+{%endif%}
+
+
+{% endblock content%}
