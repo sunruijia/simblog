@@ -8,22 +8,21 @@ from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
-import model
+
 from model import Blog
+from model import blogSystem
 
 class BaseRequestHandler(webapp.RequestHandler):
     def generateBasePage(self,template_name,values={}):
         template_values = {            
-            'request': self.request,
-            'user': users.GetCurrentUser(),
-            'login_url': users.CreateLoginURL(self.request.uri),
-            'logout_url': users.CreateLogoutURL('http://' + self.request.host + '/'),
-            'blog_link': 'http://' + self.request.host + '/'}
+           'blogSystem':blogSystem
+            }
+        template_values.update(values)
         directory = os.path.dirname(__file__)
         path = os.path.join(directory, os.path.join('templates', template_name))
-        html = template.render(path, values)
+        html = template.render(path, template_values)
         self.response.out.write(html)
-        return
+   
     def param(self, name, **kw):
         return self.request.get(name, **kw)
 
@@ -34,7 +33,7 @@ class MainPageHandler(BaseRequestHandler):
             blogid=int(blogid)
             blogs = Blog.all().filter('blog_id =', blogid).fetch(1)
             blog= blogs[0]
-            template_values = {'blog':blog, 'blogsystem':model.blogSystem}
+            template_values = {'blog':blog, 'blogsystem':blogSystem}
             self.generateBasePage('singleblog.html', template_values)
         else:
             query = Blog.all().order('-createTimeStamp')
