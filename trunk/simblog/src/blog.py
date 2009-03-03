@@ -19,7 +19,7 @@ import main
 
 class BasePublicBlog(main.BaseRequestHandler):
     def get(self):
-        self.generateBasePage('addblog.html')
+        self.generateBasePage('manage/addblog.html')
         return
     def post(self):
         title1,content1 = (self.request.get(item) for item in ('title', 'content'))
@@ -41,11 +41,11 @@ class BlogManager(main.BaseRequestHandler):
             keyID = int(id)
             blog = Blog.get_by_id(keyID)
             blog.delete()
-        self.redirect('/manage/blogs.html')
+        self.redirect('/admin/blogs')
         return
     
 def Main():
-    application = webapp.WSGIApplication([('/admin/', BasePublicBlog),('/admin/add', BasePublicBlog),
+    application = webapp.WSGIApplication([('/admin/', BasePublicBlog),('/admin/post', BasePublicBlog),
                                           ('/admin/blogs',BlogManager)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
     
