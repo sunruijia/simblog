@@ -15,6 +15,7 @@ from google.appengine.api import memcache
 
 import model
 from model import Blog
+from model import blogSystem
 import main
 
 class BasePublicBlog(main.BaseRequestHandler):
@@ -43,10 +44,23 @@ class BlogManager(main.BaseRequestHandler):
             blog.delete()
         self.redirect('/admin/blogs')
         return
+
+class BlogSystemManager(main.BaseRequestHandler):
+    def get(self):
+        self.generateBasePage('manage/config.html')      
+        return
+    def post(self):
+        blogSystem.title,blogSystem.subTitle,blogSystem.systemURL,blogSystem.systemDomain = (
+            self.request.get(item) for item in ('title', 'subtitle', 'url', 'domain'))
+        blogSystem.posts_per_page = int(self.request.get( 'posts_per_page'))
+        blogSystem.put()
+        self.redirect('/admin/config')
+        return
     
+        
 def Main():
     application = webapp.WSGIApplication([('/admin/', BasePublicBlog),('/admin/post', BasePublicBlog),
-                                          ('/admin/blogs',BlogManager)], debug=True)
+                                          ('/admin/blogs',BlogManager),('/admin/config',BlogSystemManager)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
     
 if __name__ == '__main__':

@@ -36,10 +36,17 @@ class MainPageHandler(BaseRequestHandler):
             template_values = {'blog':blog, 'blogsystem':blogSystem}
             self.generateBasePage('singleblog.html', template_values)
         else:
-            query = Blog.all().order('-createTimeStamp')
-            blogs = query.fetch(10)
+            pageIndex = self.param('page')
+            if (pageIndex):
+                pageIndex = int(pageIndex)
+            else:
+                pageIndex = 1;
+            blogs = Blog.all().order('-createTimeStamp')    
+            pager = PageManager(query=blogs,items_per_page=blogSystem.posts_per_page)
+            blogs,links = pager.fetch(pageIndex)
             template_values = {
-              'blogs': blogs
+              'blogs': blogs,
+              'pager': links
              }
             self.generateBasePage('main.html',template_values)
         return
@@ -49,6 +56,29 @@ class singleBlog(BaseRequestHandler):
 
         return
 
+class PageManager(object):
+    def __init__(self, model=None,query=None, items_per_page=10):
+        if model:
+            self.query = model.all()
+        elif query:
+            self.query=query
+
+        self.items_per_page = items_per_page
+
+    def fetch(self, p):
+        max_offset = self.query.count()
+        n = max_offset / self.items_per_page
+        if max_offset % self.items_per_page != 0:
+            n += 1
+        if p < 0 or p > n:
+            p = 1
+        offset = (p - 1) * self.items_per_page
+        results = self.query.fetch(self.items_per_page, offset)
+        links = {'count':max_offset,'page_index':p,'prev': p - 1, 'next': p + 1, 'last': n}
+        if links['next'] > n:
+            links['next'] = 0
+        return (results, links)
+    
 
 def Main():
     application = webapp.WSGIApplication([('/', MainPageHandler)], debug=True)
