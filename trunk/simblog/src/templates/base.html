@@ -15,7 +15,11 @@
 <div id="menu">
 <ul>
 	<li><a href="{{ blogSystem.systemURL }}">Home</a></li>
-	<li><a href="/admin/">admin</a></li>
+	{%if self.isAdmin%}
+	<li><a href="/admin/">Admin</a></li>
+	{%endif%}
+	<li>{%if self.isLogin%} <a href="{{self.logoutURL}}">Logout</a>
+	{%else%} <a href="{{self.loginURL}}">Login</a> {%endif%}</li>
 </ul>
 </div>
 </div>
