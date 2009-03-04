@@ -14,7 +14,9 @@ from model import blogSystem
 
 class BaseRequestHandler(webapp.RequestHandler):
     def generateBasePage(self,template_name,values={}):
-        template_values = {            
+        self.init()
+        template_values = {
+            'self':self,                           
            'blogSystem':blogSystem
             }
         template_values.update(values)
@@ -25,6 +27,14 @@ class BaseRequestHandler(webapp.RequestHandler):
    
     def param(self, name, **kw):
         return self.request.get(name, **kw)
+    def init(self):
+        self.loginURL = users.create_login_url(self.request.uri)
+        self.logoutURL = users.create_logout_url(self.request.uri)
+        self.login_user = users.get_current_user()
+        self.isLogin = (self.login_user!=None)
+        self.isAdmin = users.is_current_user_admin()
+        
+        return
 
 class MainPageHandler(BaseRequestHandler):
     def get(self):
