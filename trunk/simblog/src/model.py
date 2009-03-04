@@ -24,13 +24,17 @@ class Blog(db.Model):
 
 class BlogSystem(db.Model):
     title = db.StringProperty(multiline=False)
+    subTitle = db.StringProperty(multiline=False)
     systemURL = db.StringProperty(multiline=False)
+    systemDomain = db.StringProperty(multiline=False)
+    posts_per_page= db.IntegerProperty(default=10)
 
 def initBlogSystemData():
     global blogSystem
     blogSystem = BlogSystem(key_name = 'simblog')
     blogSystem.title = 'Your blog title'
     blogSystem.systemURL = "http://" + os.environ['HTTP_HOST']
+    blogSystem.systemDomain = os.environ['HTTP_HOST']
     blogSystem.put()
     
 def createBlogSystem():

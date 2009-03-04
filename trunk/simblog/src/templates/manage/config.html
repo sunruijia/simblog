@@ -3,4 +3,36 @@
   {{blogSystem.title}}--Config System
 {% endblock title %} 
 {% block content %}
+<form method="post" action="/admin/config" accept-charset="utf-8" id="config_form">
+<h2>Configuraiton for this Blog</h2><br/>
+<table>
+   <tr valign="top">
+      <th scope="row">Blog Title:</th>
+      <td><input type="text" size="45" value="{{ blogSystem.title }}"  id="title" name="title"/>
+      </td>
+   </tr>
+   <tr valign="top">
+      <th scope="row">Sub Title:</th>
+      <td><input type="text" size="45" value="{{ blogSystem.subTitle }}"  id="subtitle" name="subtitle"/>
+      </td>
+   </tr>
+   <tr valign="top">
+      <th scope="row">Blog Domain:</th>
+      <td><input type="text" size="45" value="{{ blogSystem.systemDomain }}"  id="domain" name="domain"/>
+      </td>
+   </tr>
+   <tr valign="top">
+      <th scope="row">Blog URL:</th>
+      <td><input type="text" size="45" value="{{ blogSystem.systemURL }}"  id="url" name="url"/>
+     </td>
+   </tr>
+   <tr valign="top">
+      <th scope="row">Posts Per Page:</th>
+      <td><input type="text" size="10" value="{{ blogSystem.posts_per_page }}"  id="posts_per_page" name="posts_per_page"/>
+     </td>
+   </tr>   
+</table>
+<br/>
+<input type="submit" value="Save Changes" name="Submit"/>
+</form>
 {% endblock content %}
