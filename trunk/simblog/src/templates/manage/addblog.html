@@ -3,14 +3,17 @@
   {{blogSystem.title}}--New Blogs
 {% endblock title %}
 {% block content %} 
-<form action="/admin/post" method="post" id="post_form"
+<form action="/admin/post{{action}}" method="post" id="post_form"
 	accept-charset="utf-8">
 <div>Write one blog :</div>
 <div>Title:<br>
-<input type="text" id="title" name="title" width="300px" size="50"><br>
+<input type="text" id="title" name="title" width="300px" size="50" value="{{title}}"/>
+<br>
 </div>
 <div>Content:<br>
-<textarea name="content" cols="50" rows="10"></textarea></div>
+<textarea name="content" cols="50" rows="10">
+{{ content }}
+</textarea></div>
 <div><br>
 <input type="submit" value="Save"></div>
 </form>
