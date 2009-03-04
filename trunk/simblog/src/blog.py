@@ -20,13 +20,32 @@ import main
 
 class BasePublicBlog(main.BaseRequestHandler):
     def get(self):
-        self.generateBasePage('manage/addblog.html')
+        action = self.param('action')
+        if(action == ''):
+            value ={'action':'?action=add'}
+        elif(action=='edit'):
+            key = self.param('key')
+            blog = Blog.get(key)
+            value={'action':'?key='+ key +'&action=edit',
+                   'title':blog.title,
+                   'content':blog.content} 
+        self.generateBasePage('manage/addblog.html',value)
         return
     def post(self):
+        key = self.param('key')
+        action = self.param('action')
         title1,content1 = (self.request.get(item) for item in ('title', 'content'))
-        blogEntity = model.Blog(title = title1, content = content1, createTimeStamp = datetime.datetime.now())
-        blogEntity.publish()
-        self.redirect('/')
+        if(action=='add'):            
+            blogEntity = Blog(title = title1, content = content1, createTimeStamp = datetime.datetime.now())
+            blogEntity.publish()
+            self.redirect('/')
+        elif(action=='edit'):
+            blogEntity = Blog.get(key)
+            blogEntity.title = title1
+            blogEntity.content = content1
+            blogEntity.put()
+            self.redirect('/?p=%d'%blogEntity.blog_id)
+        
 
 class BlogManager(main.BaseRequestHandler):
     def get(self):

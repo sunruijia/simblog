@@ -17,7 +17,7 @@
         <th class="check-column" scope="row"><input type="checkbox"
 			value="{{blog.key.id}}" name="checks" /></th>
 		<td>{{blog.createTimeStamp|date:"F jS, Y"}}</td>
-		<td>{{blog.title}}</td>
+		<td><a title='Edit "{{blog.title}}"' href="/admin/post?key={{blog.key}}&amp;action=edit">{{blog.title}}</a></td>
 	</tr>
 {% endfor %}
 </table>

@@ -43,7 +43,7 @@ class MainPageHandler(BaseRequestHandler):
             blogid=int(blogid)
             blogs = Blog.all().filter('blog_id =', blogid).fetch(1)
             blog= blogs[0]
-            template_values = {'blog':blog, 'blogsystem':blogSystem}
+            template_values = {'blog':blog}
             self.generateBasePage('singleblog.html', template_values)
         else:
             pageIndex = self.param('page')
