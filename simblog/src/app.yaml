@@ -5,12 +5,16 @@ api_version: 1
 
 handlers:
 
-- url: /static/(.*)
-  static_files: static/\1
-  upload: static/(.*)
+- url: /static
+  static_dir: static
+
+- url: /myadmin/.*|/myadmin
+  script: $PYTHON_LIB/google/appengine/ext/admin
+  login: admin
   
 - url: /admin/.*
   script: blog.py 
   
 - url: /.*
   script: main.py
+  

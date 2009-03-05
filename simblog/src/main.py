@@ -13,28 +13,40 @@ from model import Blog
 from model import blogSystem
 
 class BaseRequestHandler(webapp.RequestHandler):
-    def generateBasePage(self,template_name,values={}):
-        self.init()
-        template_values = {
-            'self':self,                           
-           'blogSystem':blogSystem
-            }
-        template_values.update(values)
+    def generateBasePage(self,template_name,values={},error=0):
+        self.template_values.update(values)
         directory = os.path.dirname(__file__)
         path = os.path.join(directory, os.path.join('templates', template_name))
-        html = template.render(path, template_values)
+        html = template.render(path, self.template_values)
+        if error != 0:
+            self.response.set_status(error)
         self.response.out.write(html)
    
     def param(self, name, **kw):
         return self.request.get(name, **kw)
-    def init(self):
+    
+    def initialize(self, request, response):
+        webapp.RequestHandler.initialize(self, request, response)
         self.loginURL = users.create_login_url(self.request.uri)
         self.logoutURL = users.create_logout_url(self.request.uri)
         self.login_user = users.get_current_user()
         self.isLogin = (self.login_user!=None)
         self.isAdmin = users.is_current_user_admin()
-        
-        return
+        self.template_values = {
+            'self':self,                           
+           'blogSystem':blogSystem
+            }
+    def error(self,errorCode):
+        if errorCode == 404:
+            message = 'Sorry, we were not able to find the requested page. '
+        elif errorCode == 403:
+            message = 'Sorry, that page is reserved for administrators.  '
+        elif errorCode == 500:
+            message = "Sorry, the server encountered an error. "
+        else:
+            message = 'unknow error '
+        values = {'errorcode':errorCode,'message':message} 
+        self.generateBasePage('error.html', values,error=errorCode) 
 
 class MainPageHandler(BaseRequestHandler):
     def get(self):

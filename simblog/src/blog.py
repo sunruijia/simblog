@@ -17,8 +17,10 @@ import model
 from model import Blog
 from model import blogSystem
 import main
+from utility import  *
 
 class BasePublicBlog(main.BaseRequestHandler):
+    @checkAdmin
     def get(self):
         action = self.param('action')
         if(action == ''):
@@ -31,6 +33,7 @@ class BasePublicBlog(main.BaseRequestHandler):
                    'content':blog.content} 
         self.generateBasePage('manage/addblog.html',value)
         return
+    @checkAdmin
     def post(self):
         key = self.param('key')
         action = self.param('action')
@@ -48,6 +51,8 @@ class BasePublicBlog(main.BaseRequestHandler):
         
 
 class BlogManager(main.BaseRequestHandler):
+
+    @checkAdmin
     def get(self):
         blogs = Blog.all().order('-createTimeStamp').fetch(10)
         template_values = {
@@ -55,6 +60,7 @@ class BlogManager(main.BaseRequestHandler):
         }
         self.generateBasePage('manage/blogs.html',template_values)
         return
+    @checkAdmin
     def post(self):
         checkedIDs= self.request.get_all('checks')
         for id in checkedIDs:
@@ -65,9 +71,12 @@ class BlogManager(main.BaseRequestHandler):
         return
 
 class BlogSystemManager(main.BaseRequestHandler):
+
+    @checkAdmin
     def get(self):
         self.generateBasePage('manage/config.html')      
         return
+    @checkAdmin
     def post(self):
         blogSystem.title,blogSystem.subTitle,blogSystem.systemURL,blogSystem.systemDomain = (
             self.request.get(item) for item in ('title', 'subtitle', 'url', 'domain'))
