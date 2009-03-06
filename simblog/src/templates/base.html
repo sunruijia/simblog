@@ -4,10 +4,32 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <title>{% block title %} {{ blogSystem.title}}{% endblock %}</title>
 <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
+<script type="text/javascript" src="/static/jsscripts/rounded_corners_lite.inc.js"></script>
 {% block head_block %}{% endblock %}
+
+<script type="text/JavaScript">
+window.onload = function()
+{
+   settings = {
+     tl: { radius: 5 },
+     tr: { radius: 5 },
+     bl: { radius: 5 },
+     br: { radius: 5 },
+     antiAlias: true,
+     autoPad: true,
+     validTags: ["div"]
+   }
+   var myBoxObject = new curvyCorners(settings, "sidebar");
+   myBoxObject.applyCornersToAll();
+   var myBoxObject = new curvyCorners(settings, "nifty");
+   myBoxObject.applyCornersToAll();
+}
+
+</script>
 </head>
 <body>
 <div id="main">
+<div id="wrapper">
 <div id="top">
 <div id="system_title">
 <h1><a href="{{blogSystem.homeurl}}/" title="{{blogSystem.title}}">{{blogSystem.title}}</a></h1>
@@ -24,12 +46,13 @@
 </div>
 </div>
 <div id="content">
-<div id="split">{%block content %}{%endblock%}
-<br/>
-<br/>
-<div id="nevegation">{%block page %}{%endblock%}</div></div>
+
+<div id="split">{%block content %}{%endblock%}</div>
+{%block sidebar %}{%endblock%}
+
 </div>
 </div>
+
 
 
  

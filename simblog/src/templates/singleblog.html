@@ -17,9 +17,19 @@
 </div>
 <div class="cbottom"></div>
 <div class="space"></div>
+<div class="ctop"></div>
+<div class="box">
+{% include "comments.html" %}
+</div>
+<div class="cbottom"></div>
+<div class="space"></div>
+
+
 {% else %}
 No blog
 {%endif%}
-
-
 {% endblock content%}
+
+{%block sidebar %}
+{% include "sidebar.html" %}
+{%endblock sidebar %}

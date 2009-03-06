@@ -15,20 +15,18 @@
     </h2>
 </div>
   {{blog.content|linebreaks}}
+  <div class="meta">
+   {% if self.isAdmin %}
+      <a href="/admin/post?key={{blog.key}}&amp;action=edit">Edit</a> | 
+   {% endif %}
+   <a href="/{{blog.selfLink}}#comments">Comments({{blog.commentCount}})&#187;</a>
+  </div>
 <div class="cbottom"></div>
 <div class="space"></div>
 </div>
 {% endfor %}
 {% endif %}
 
-{% block comments %}
-
-{% endblock comments%}
-
-
-{% endblock content%}
-
-{%block page %}
 
 <div class="ctop"></div>
 <div class="box">
@@ -53,4 +51,16 @@
 <div class="cbottom"></div>
 <div class="space"></div>
 
-{%endblock page%}
+
+{% endblock content%}
+
+{%block sidebar %}
+{% include "sidebar.html" %}
+{%endblock sidebar %}
+
+
+
+
+
+
+
