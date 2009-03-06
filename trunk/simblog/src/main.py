@@ -11,6 +11,7 @@ from google.appengine.ext.webapp import template
 
 from model import Blog
 from model import blogSystem
+from model import Comment
 
 class BaseRequestHandler(webapp.RequestHandler):
     def generateBasePage(self,template_name,values={},error=0):
@@ -27,6 +28,7 @@ class BaseRequestHandler(webapp.RequestHandler):
     
     def initialize(self, request, response):
         webapp.RequestHandler.initialize(self, request, response)
+        self.blog = blogSystem
         self.loginURL = users.create_login_url(self.request.uri)
         self.logoutURL = users.create_logout_url(self.request.uri)
         self.login_user = users.get_current_user()
@@ -36,7 +38,7 @@ class BaseRequestHandler(webapp.RequestHandler):
             'self':self,                           
            'blogSystem':blogSystem
             }
-    def error(self,errorCode):
+    def error(self,errorCode,msg=''):
         if errorCode == 404:
             message = 'Sorry, we were not able to find the requested page. '
         elif errorCode == 403:
@@ -44,18 +46,21 @@ class BaseRequestHandler(webapp.RequestHandler):
         elif errorCode == 500:
             message = "Sorry, the server encountered an error. "
         else:
-            message = 'unknow error '
+            message = msg
         values = {'errorcode':errorCode,'message':message} 
         self.generateBasePage('error.html', values,error=errorCode) 
 
 class MainPageHandler(BaseRequestHandler):
     def get(self):
+        recentComments = Comment.all().order('-commentTime').fetch(10)
+        template_values = {'recentComments':recentComments}
         blogid=self.param('p')
         if(blogid):
             blogid=int(blogid)
             blogs = Blog.all().filter('blog_id =', blogid).fetch(1)
-            blog= blogs[0]
-            template_values = {'blog':blog}
+            blog= blogs[0]   
+            comments = Comment.all().filter("ownerBlog =",blog).order('commentTime')
+            template_values.update({'blog':blog,'comments':comments})
             self.generateBasePage('singleblog.html', template_values)
         else:
             pageIndex = self.param('page')
@@ -66,13 +71,38 @@ class MainPageHandler(BaseRequestHandler):
             blogs = Blog.all().order('-createTimeStamp')    
             pager = PageManager(query=blogs,items_per_page=blogSystem.posts_per_page)
             blogs,links = pager.fetch(pageIndex)
-            template_values = {
+            template_values.update({
               'blogs': blogs,
               'pager': links
-             }
+             })
             self.generateBasePage('main.html',template_values)
         return
 
+class PostCommentHandler(BaseRequestHandler):
+    def post(self):
+        if(self.isAdmin):
+            name = self.blog.author
+            email = self.login_user.email()
+            url = self.blog.systemURL
+        else:
+            name=self.param('author')
+            email=self.param('email')
+            url=self.param('url')
+        key=self.param('key')
+        content=self.param('comment')
+        if (name and content):
+            comment=Comment(author=name,
+                            content=content,
+                            authorEmail=email,
+                            authorURL=url,
+                            ownerBlog=Blog.get(key))
+            comment.save()
+            self.redirect(Blog.get(key).selfLink)
+        else:
+            self.error(501,'Please input name and comment .')
+    
+    
+    
 class singleBlog(BaseRequestHandler):
     def get(self,blogid=None):
 
@@ -103,7 +133,7 @@ class PageManager(object):
     
 
 def Main():
-    application = webapp.WSGIApplication([('/', MainPageHandler)], debug=True)
+    application = webapp.WSGIApplication([('/', MainPageHandler),('/post_comment',PostCommentHandler)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
     return
 

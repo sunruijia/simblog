@@ -9,11 +9,13 @@ from google.appengine.ext.db import djangoforms
 blogSystem = None
 
 class Blog(db.Model):
+    author = db.UserProperty()
     title = db.StringProperty(required=True)
     content = db.TextProperty(required=True)
     createTimeStamp = db.DateTimeProperty(required=True)
     selfLink = db.StringProperty(multiline=False,default='')
     blog_id = db.IntegerProperty()
+    commentCount = db.IntegerProperty(default=0)
     def save(self):
         return
     def publish(self):
@@ -23,11 +25,36 @@ class Blog(db.Model):
         self.put()
 
 class BlogSystem(db.Model):
+    owner = db.UserProperty()
+    author=db.StringProperty(default='admin')
     title = db.StringProperty(multiline=False)
     subTitle = db.StringProperty(multiline=False)
     systemURL = db.StringProperty(multiline=False)
     systemDomain = db.StringProperty(multiline=False)
     posts_per_page= db.IntegerProperty(default=10)
+
+class Comment(db.Model):
+    ownerBlog = db.ReferenceProperty(Blog)
+    commentTime = db.DateTimeProperty(auto_now_add=True)
+    content = db.TextProperty(required=True)
+    author = db.StringProperty()
+    authorEmail = db.EmailProperty()
+    authorURL = db.StringProperty(multiline=False,default='')
+    
+    @property
+    def briefContent(self,len=20):
+        return self.content[:len]
+    
+    def save(self):
+        self.put()
+        self.ownerBlog.commentCount+=1
+        self.ownerBlog.put()
+        return
+    def delete(self):
+        self.entry.commentcount-=1
+        self.entry.put()
+        self.delete()
+
 
 def initBlogSystemData():
     global blogSystem

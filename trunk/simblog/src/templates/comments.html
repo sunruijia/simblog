@@ -1,0 +1,47 @@
+
+{% if blog.commentCount%}
+	<h3 id="comments">{{blog.commentCount}} Responses to &#8220;{{blog.title}}&#8221;</h3>
+	<ol class="commentlist">
+	{% for comment in comments %}
+
+		<li class="{%cycle alt1,alt %}" id="comment-{{comment.key.id}}">
+			<div class="comments"><a href="{{comment.authorURL}}" target="_blank">{{comment.author}}</a> On <small class="commentmetadata"><a href="#comment-{{comment.key.id}}" title="">{{comment.commentTime.date}} at {{comment.commentTime|date:"H:i"}}</a> </small>			
+			<br />
+			<p>{{comment.content}}</p>
+			</div>
+			<div class="clear"></div>
+		</li>
+	{%endfor%}
+	</ol>
+{%endif%}
+
+
+
+<h3 id="respond">Leave your comments</h3>
+<form action="/post_comment" method="post" id="commentform">
+{%if not self.isAdmin%}
+<label for="author"><small>Name (required)</small></label></p>
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+
+<label for="email"><small>Mail (will not be published)</small></label></p>
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+
+<label for="url"><small>Website</small></label></p>
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+
+{% if not self.isLogin%}
+ <a href="{{self.loginURL}}">Click here to login</a></p>
+{%endif%}
+{%endif%}
+
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" type="submit"  id="submit" tabindex="5" value="Submit Comment" />
+</p>
+<input type="hidden" name="key" value="{{blog.key}}" />
+</form>
+
+
+
+
