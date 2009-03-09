@@ -111,6 +111,19 @@ class singleBlog(BaseRequestHandler):
 
         return
 
+class RSSHandler(BaseRequestHandler):
+    def get(self):
+        blogs = Blog.all().order('-createTimeStamp').fetch(10)
+        if blogs and blogs[0]:
+            lastUpdateTime = blogs[0].createTimeStamp
+            lastUpdateTime = lastUpdateTime.strftime("%Y-%m-%dT%H:%M:%SZ")
+        for blog in blogs:
+            blog.formatDate =  blog.createTimeStamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+        self.response.headers['Content-Type'] = 'application/atom+xml'
+        values = {'blogs':blogs,'lastUpdateTime':lastUpdateTime}
+        self.generateBasePage('atom.xml',values)
+        
+
 class PageManager(object):
     def __init__(self, model=None,query=None, items_per_page=10):
         if model:
@@ -136,7 +149,8 @@ class PageManager(object):
     
 
 def Main():
-    application = webapp.WSGIApplication([('/', MainPageHandler),('/post_comment',PostCommentHandler)], debug=True)
+    application = webapp.WSGIApplication([('/', MainPageHandler),('/post_comment',PostCommentHandler),
+                                          ('/feed',RSSHandler)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
     return
 

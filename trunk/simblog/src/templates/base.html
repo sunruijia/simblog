@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <title>{% block title %} {{ blogSystem.title}}{% endblock %}</title>
 <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
+<link rel="alternate" type="application/rss+xml" title="{{ blogSystem.title }} RSS Feed" href="{{ blogSystem.feedURL }}" />
 <script type="text/javascript" src="/static/jsscripts/rounded_corners_lite.inc.js"></script>
 {% block head_block %}{% endblock %}
 
@@ -42,6 +43,7 @@ window.onload = function()
 	{%endif%}
 	<li>{%if self.isLogin%} <a href="{{self.logoutURL}}">Logout</a>
 	{%else%} <a href="{{self.loginURL}}">Login</a> {%endif%}</li>
+	<li><a href="{{ blogSystem.feedURL }}">RSS订阅</a></li>
 </ul>
 </div>
 </div>
