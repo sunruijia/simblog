@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+  {{blogSystem.title}}
+{% endblock title %}
+{% block content %} 
+<form action="/admin/link" method="post" id="post_form"
+	accept-charset="utf-8">
+<h2>{%ifequal action 'edit'%}Edit link{%else%}Add Link {%endifequal%}</h2>
+<div>Link Name:<br>
+<input type="text" id="linkName" name="linkName" width="300px" size="50" value="{{link.linkName}}"/>
+</div>
+<div>Link URL:<br>
+<input type="text" id="linkURL" name="linkURL" width="300px" size="100" value="{{link.linkURL}}"/>
+</div>
+<div><br>
+<input type="hidden" value="{{link.key.id}}" name="id"/>
+<input type="hidden" value="{{action}}" name="action"/>
+<input type="submit" value="Save"></div>
+</form>
+{% endblock content %}

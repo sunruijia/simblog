@@ -38,7 +38,7 @@ class Comment(db.Model):
     commentTime = db.DateTimeProperty(auto_now_add=True)
     content = db.TextProperty(required=True)
     author = db.StringProperty()
-    authorEmail = db.EmailProperty()
+    authorEmail = db.StringProperty(multiline=False,default='')
     authorURL = db.StringProperty(multiline=False,default='')
     
     @property
@@ -55,6 +55,9 @@ class Comment(db.Model):
         self.ownerBlog.put()
         db.delete(self)
 
+class Link(db.Model):
+    linkName = db.StringProperty(multiline=False,default='')
+    linkURL = db.StringProperty(multiline=False,default='')
 
 def initBlogSystemData():
     global blogSystem
