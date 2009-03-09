@@ -51,9 +51,9 @@ class Comment(db.Model):
         self.ownerBlog.put()
         return
     def delete(self):
-        self.entry.commentcount-=1
-        self.entry.put()
-        self.delete()
+        self.ownerBlog.commentCount-=1
+        self.ownerBlog.put()
+        db.delete(self)
 
 
 def initBlogSystemData():

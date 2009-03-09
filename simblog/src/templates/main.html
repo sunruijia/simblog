@@ -8,6 +8,7 @@
 {% for blog in blogs %}
 <div class="ctop"></div>
 <div class="box">
+
 <div class="nifty">
    <h2>
      <a href="/{{blog.selfLink}}" rel="bookmark" >{{blog.title}}</a> 
@@ -21,16 +22,17 @@
    {% endif %}
    <a href="/{{blog.selfLink}}#comments">Comments({{blog.commentCount}})&#187;</a>
   </div>
+
+</div>
 <div class="cbottom"></div>
 <div class="space"></div>
-</div>
+
 {% endfor %}
 {% endif %}
 
 
 <div class="ctop"></div>
 <div class="box">
-<div class="page">
 {% if pager.prev %}
    <div class="alignleft"><a href="?page={{ pager.prev}}">&laquo; Previous</a></div>
 {% endif %}
@@ -45,7 +47,6 @@
 {% if pager.next %}
    <div class="alignright"><a href="?page={{ pager.next }}">Next &raquo;</a></div>
 {% endif %}
-</div>
 <div class="clear"></div>
 </div>
 <div class="cbottom"></div>

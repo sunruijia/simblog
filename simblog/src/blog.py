@@ -16,6 +16,7 @@ from google.appengine.api import memcache
 import model
 from model import Blog
 from model import blogSystem
+from model import Comment
 import main
 from utility import  *
 
@@ -85,10 +86,32 @@ class BlogSystemManager(main.BaseRequestHandler):
         self.redirect('/admin/config')
         return
     
-        
+class BlogCommentManager(main.BaseRequestHandler):
+    @checkAdmin
+    def get(self):
+        comments=Comment.all().order('-commentTime')
+        values = {'comments':comments}
+        self.generateBasePage('manage/comments.html', values)
+        return
+    
+    @checkAdmin
+    def post(self):
+        try:
+            checkList = self.request.get_all('checks')
+            for key in checkList:
+                keyID = int(key)
+                comment=Comment.get_by_id(keyID)
+                comment.delete()
+        finally:
+            self.redirect('/admin/comments')
+        return
+    
+    
+            
 def Main():
     application = webapp.WSGIApplication([('/admin/', BasePublicBlog),('/admin/post', BasePublicBlog),
-                                          ('/admin/blogs',BlogManager),('/admin/config',BlogSystemManager)], debug=True)
+                                          ('/admin/blogs',BlogManager),('/admin/config',BlogSystemManager),
+                                          ('/admin/comments',BlogCommentManager)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
     
 if __name__ == '__main__':
