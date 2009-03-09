@@ -10,6 +10,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
 from model import Blog
+from model import Link
 from model import blogSystem
 from model import Comment
 
@@ -53,7 +54,9 @@ class BaseRequestHandler(webapp.RequestHandler):
 class MainPageHandler(BaseRequestHandler):
     def get(self):
         recentComments = Comment.all().order('-commentTime').fetch(10)
-        template_values = {'recentComments':recentComments}
+        recentBlogs = Blog.all().order('-createTimeStamp').fetch(5)
+        links = Link.all()
+        template_values = {'recentComments':recentComments,'recentBlogs':recentBlogs,'links':links}
         blogid=self.param('p')
         if(blogid):
             blogid=int(blogid)

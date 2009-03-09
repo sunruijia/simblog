@@ -1,7 +1,20 @@
 <div class="sidebar">
 <ul>
-<li>
+<h2>Mini Blog</h2>
+<a href="http://fanfou.com/sunruijia" target="_blank" title="饭否"><img src="http://b.fanfou.com/u/sunruijia/m160_3.png" alt="饭否" /></a>
+<li></li>
 
+<li>
+ <h2>Recent Blog</h2>
+  <ul>
+ 	{%for blog in recentBlogs%}
+  <li>	<a href="{{blog.selfLink}}">{{blog.title}}</a></li>
+ 	{%endfor%}
+ 	</ul>
+</li>
+
+
+<li>
     <h2>Recent Comments</h2>
         <ul>
         {% for comment in recentComments %}
@@ -10,21 +23,15 @@
         </ul>
         </li>
 
-<li>
- <h2>Categories</h2>
-  <ul>
- 	{%for cate in categories%}
-  <li>	<a href="/category/{{cate.slug}}">{{cate.name}}({{cate.count}})</a></li>
- 	{%endfor%}
- 	</ul>
 
-</li>
 
 <li>
-<h2>Blog roll</h2>
+<h2>Friends' Link</h2>
+
+
 <ul>
-{%for link in blogroll%}
-<li><a href="{{link.href}}">{{link.linktext}}</a></li>
+{%for link in links%}
+<li><a href="{{link.linkURL}}">{{link.linkName}}</a></li>
 {%endfor%}
 
 </ul>
@@ -32,4 +39,6 @@
 
 
 </ul>
+
+
 </div>

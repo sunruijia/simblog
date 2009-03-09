@@ -17,6 +17,8 @@ import model
 from model import Blog
 from model import blogSystem
 from model import Comment
+from model import  Link
+
 import main
 from utility import  *
 
@@ -106,12 +108,58 @@ class BlogCommentManager(main.BaseRequestHandler):
             self.redirect('/admin/comments')
         return
     
+class BlogLinksManager(main.BaseRequestHandler):
+    @checkAdmin
+    def get(self):
+        links = Link.all()
+        values = {'links':links}
+        self.generateBasePage('manage/links.html', values)
+        return
     
-            
+    @checkAdmin
+    def post(self):
+        try:
+            checkList = self.request.get_all('checks')
+            for key in checkList:
+                keyID = int(key)
+                link=Link.get_by_id(keyID)
+                link.delete()
+        finally:
+            self.redirect('/admin/links')        
+        return   
+ 
+class BlogLinkManager(main.BaseRequestHandler):
+    @checkAdmin
+    def get(self):
+        action = self.param('action')
+        values = {'action':action}
+        if(action == 'edit'):
+            key = self.param('id')
+            link = Link.get_by_id(int(key))
+            values.update({'link':link})
+        self.generateBasePage('manage/link.html', values)
+        return
+    @checkAdmin
+    def post(self):
+        action = self.param('action')
+        name,url = (self.request.get(item) for item in ('linkName', 'linkURL'))
+        if(action == 'edit'):
+            key = self.param('id')
+            link = Link.get_by_id(int(key))
+            link.linkName = name
+            link.linkURL = url
+        else:
+            link = Link(linkName=name,linkURL=url)
+        link.put()
+        self.redirect('/admin/links')   
+        return  
+               
 def Main():
     application = webapp.WSGIApplication([('/admin/', BasePublicBlog),('/admin/post', BasePublicBlog),
                                           ('/admin/blogs',BlogManager),('/admin/config',BlogSystemManager),
-                                          ('/admin/comments',BlogCommentManager)], debug=True)
+                                          ('/admin/comments',BlogCommentManager),
+                                          ('/admin/links',BlogLinksManager),
+                                          ('/admin/link',BlogLinkManager)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
     
 if __name__ == '__main__':

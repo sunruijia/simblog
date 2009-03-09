@@ -1,28 +1,25 @@
 {% extends "base.html" %}
 {% block title %}
-  {{blogSystem.title}}--Manage Comments
+  {{blogSystem.title}}--Manage Links
 {% endblock title %} 
 {% block content %}
 
-{%if comments %}
+{%if links %}
 
-<form action="/admin/comments" method="post">
+<form action="/admin/links" method="post">
+<h2>Manage Links (<a href="/admin/link?action=add">add new link</a>)</h2>
 <table>
 	<tr>
 	    <th class="check-column" scope="col"><input type="checkbox" onclick="$('input[name=checks]').attr('checked',this.checked);"/></th>
-		<th>Date</th>
-		<th>author</th>
-		<th>content</th>
-		<th>Blog</th>
+		<th>Link Name</th>
+		<th>Link URL</th>
 	</tr>
-{% for comment in comments %}
+{% for link in links %}
 	<tr valign="middle">
         <th class="check-column" scope="row"><input type="checkbox"
-			value="{{comment.key.id}}" name="checks" /></th>
-		<td>{{comment.commentTime|date:"F jS, Y"}}</td>
-		<td>{{comment.author}}</td>
-		<td>{{comment.content}}</td>
-		<td><a href="{{blogSystem.baseurl}}/{{comment.ownerBlog.selfLink}}" >{{comment.ownerBlog.title}}</a></td>
+			value="{{link.key.id}}" name="checks" /></th>
+		<td><a title='Edit "{{link.linktext}}"' href="/admin/link?id={{link.key.id}}&amp;action=edit">{{link.linkName}}</a></td>
+		<td><a href="{{link.linkURL}}" >{{link.linkURL}}</a></td>
 	</tr>
 {% endfor %}
 </table>
@@ -32,6 +29,6 @@
 </form>
 
 {% else %}
-No comments
+No links
 {% endif %}
 {% endblock content %}
