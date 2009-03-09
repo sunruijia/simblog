@@ -31,6 +31,7 @@ class BlogSystem(db.Model):
     subTitle = db.StringProperty(multiline=False)
     systemURL = db.StringProperty(multiline=False)
     systemDomain = db.StringProperty(multiline=False)
+    feedURL = db.StringProperty(multiline=False)
     posts_per_page= db.IntegerProperty(default=10)
 
 class Comment(db.Model):
@@ -65,6 +66,7 @@ def initBlogSystemData():
     blogSystem.title = 'Your blog title'
     blogSystem.systemURL = "http://" + os.environ['HTTP_HOST']
     blogSystem.systemDomain = os.environ['HTTP_HOST']
+    blogSystem.feedURL = blogSystem.systemURL + "/feed"
     blogSystem.put()
     
 def createBlogSystem():

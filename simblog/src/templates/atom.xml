@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><![CDATA[{{ blogSystem.title }}]]></title>
+    <id>{{ blogSystem.systemURL }}/</id>
+    <subtitle>{{ blogSystem.subTitle }}</subtitle>
+    <link href="{{blogSystem.systemURL }}" />
+    <link href="{{ blogSystem.systemURL }}/feed" rel="self" />
+    <updated>{{lastUpdateTime}}</updated>
+    <author>
+      <name>{{ blogSystem.owner.nickname }}</name>
+    </author>
+{% for blog in blogs %}
+  <entry>
+      <link href="{{ blogSystem.systemURL }}/{{blog.selfLink}}"/>
+      <id>{{ blogSystem.systemURL }}/blog/{{blog.blog_id}}</id>
+      <title><![CDATA[{{blog.title}}]]></title>
+      <content type="html"><![CDATA[{{blog.content}}]]></content>
+      <author>
+          <name>{{blog.author}}</name>
+      </author>
+      <updated>{{blog.formatDate}}</updated>
+  </entry>
+{% endfor %}
+</feed>
