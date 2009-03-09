@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}
+  {{blogSystem.title}}--Manage Comments
+{% endblock title %} 
+{% block content %}
+
+{%if comments %}
+
+<form action="/admin/comments" method="post">
+<table>
+	<tr>
+	    <th class="check-column" scope="col"><input type="checkbox" onclick="$('input[name=checks]').attr('checked',this.checked);"/></th>
+		<th>Date</th>
+		<th>author</th>
+		<th>content</th>
+		<th>Blog</th>
+	</tr>
+{% for comment in comments %}
+	<tr valign="middle">
+        <th class="check-column" scope="row"><input type="checkbox"
+			value="{{comment.key.id}}" name="checks" /></th>
+		<td>{{comment.commentTime|date:"F jS, Y"}}</td>
+		<td>{{comment.author}}</td>
+		<td>{{comment.content}}</td>
+		<td><a  target="_blank" href="{{blogSystem.baseurl}}/{{comment.ownerBlog.selfLink}}" >{{comment.ownerBlog.title}}</a></td>
+	</tr>
+{% endfor %}
+</table>
+<br class="clear" />
+<input type="submit" class="button-secondary delete" name="deleteit"
+	value="Delete" />
+</form>
+
+{% else %}
+No comments
+{% endif %}
+{% endblock content %}
