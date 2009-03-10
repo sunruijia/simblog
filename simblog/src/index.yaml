@@ -10,8 +10,27 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 3 times in query history.
+# Used 490 times in query history.
 - kind: Blog
   properties:
   - name: createTimeStamp
+    direction: desc
+
+# Used 120 times in query history.
+- kind: Comment
+  properties:
+  - name: commentTime
+    direction: desc
+
+# Used 22 times in query history.
+- kind: Comment
+  properties:
+  - name: ownerBlog
+  - name: commentTime
+
+# Used once in query history.
+- kind: Comment
+  properties:
+  - name: ownerBlog
+  - name: commentTime
     direction: desc

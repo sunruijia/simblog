@@ -42,7 +42,7 @@ class BasePublicBlog(main.BaseRequestHandler):
         action = self.param('action')
         title1,content1 = (self.request.get(item) for item in ('title', 'content'))
         if(action=='add'):            
-            blogEntity = Blog(title = title1, content = content1, createTimeStamp = datetime.datetime.now())
+            blogEntity = Blog(title = title1, content = content1, createTimeStamp = datetime.now())
             blogEntity.publish()
             self.redirect('/')
         elif(action=='edit'):

@@ -13,6 +13,7 @@ from model import Blog
 from model import Link
 from model import blogSystem
 from model import Comment
+from utility import  *
 
 class BaseRequestHandler(webapp.RequestHandler):
     def generateBasePage(self,template_name,values={},error=0):
@@ -52,6 +53,7 @@ class BaseRequestHandler(webapp.RequestHandler):
         self.generateBasePage('error.html', values,error=errorCode) 
 
 class MainPageHandler(BaseRequestHandler):
+    @cache
     def get(self):
         recentComments = Comment.all().order('-commentTime').fetch(10)
         recentBlogs = Blog.all().order('-createTimeStamp').fetch(5)
@@ -112,6 +114,7 @@ class singleBlog(BaseRequestHandler):
         return
 
 class RSSHandler(BaseRequestHandler):
+    @cache
     def get(self):
         blogs = Blog.all().order('-createTimeStamp').fetch(10)
         if blogs and blogs[0]:
