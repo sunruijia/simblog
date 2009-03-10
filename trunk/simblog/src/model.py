@@ -23,6 +23,13 @@ class Blog(db.Model):
         self.blog_id = self.key().id()
         self.selfLink = '?p=%d'%self.blog_id
         self.put()
+    def delete(self):
+        comments = Comment.all().filter("ownerBlog =",self)
+        if comments:
+            for comment in comments:
+                comment.delete()
+        db.delete(self)
+        
 
 class BlogSystem(db.Model):
     owner = db.UserProperty()
