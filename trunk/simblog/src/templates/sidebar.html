@@ -17,9 +17,11 @@
 <li>
     <h2>Recent Comments</h2>
         <ul>
-        {% for comment in recentComments %}
-        <li><a href="/{{comment.ownerBlog.selfLink}}#comment-{{comment.key.id}}">{{comment.author}}:{{comment.briefContent}}...</a> </li>
-        {%endfor%}
+        {% if recentComments %}
+          {% for comment in recentComments %}
+            <li><a href="/{{comment.ownerBlog.selfLink}}#comment-{{comment.key.id}}">{{comment.author}}:{{comment.briefContent}}...</a> </li>
+          {%endfor%}
+         {% endif %} 
         </ul>
         </li>
 
