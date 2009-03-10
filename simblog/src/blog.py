@@ -41,6 +41,9 @@ class BasePublicBlog(main.BaseRequestHandler):
         key = self.param('key')
         action = self.param('action')
         title1,content1 = (self.request.get(item) for item in ('title', 'content'))
+        if(not title1)or(not content1):
+            self.error(501,'Please input title and content .')
+            return
         if(action=='add'):            
             blogEntity = Blog(title = title1, content = content1, createTimeStamp = datetime.now())
             blogEntity.publish()
