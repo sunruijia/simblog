@@ -310,7 +310,12 @@ img.centered a:link,img.alignright a:link,img.alignleft a:link {
 }
 
 .alignleft {
-	float: left
+	float: left;
+}
+
+.aligncenter {
+	float: center;
+	text-align: center;
 }
 
 html>body .box ul {
@@ -330,7 +335,7 @@ html>body .box li {
 }
 
 code {
-	font: 1.1em ‘Courier New ?   Courier, Fixed;
+	font: 1.1em â€˜Courier New ?   Courier, Fixed;
 	display: block;
 	padding: 5px 5px 0 5px;
 	border: 1px solid #dadada;
@@ -343,7 +348,7 @@ p code {
 }
 
 blockquote {
-	font: 1.1em ‘Courier New ?   Courier, Fixed;
+	font: 1.1em â€˜Courier New ?   Courier, Fixed;
 	display: block;
 	padding: 5px 5px 0 5px;
 	border: 1px solid #dadada;
