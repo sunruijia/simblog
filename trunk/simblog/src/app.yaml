@@ -1,4 +1,4 @@
-application: simblog
+application: srjsimblog
 version: 1
 runtime: python
 api_version: 1
@@ -14,7 +14,10 @@ handlers:
   
 - url: /admin/.*
   script: blog.py 
-  
+
+- url: /admin
+  script: blog.py
+    
 - url: /.*
   script: main.py
   

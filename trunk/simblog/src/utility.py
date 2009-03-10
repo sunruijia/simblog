@@ -32,6 +32,6 @@ def cache(method):
             response.headers['last-modified'] = datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
             method(self, *args, **kwargs)
             result=response.out.getvalue()
-            memcache.set(key,(result,response.headers['last-modified']),15)
+            memcache.set(key,(result,response.headers['last-modified']),1)
             return      
     return wrapper
