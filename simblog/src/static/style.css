@@ -32,6 +32,7 @@ a:hover {
 /*...... main and sticky footer ........*/
 html,body {
 	height: 100%;
+
 }
 
 #main {
@@ -80,7 +81,7 @@ h3 {
 }
 
 #logo h1 a {
-	color: white;
+	color: black;
 	display: block;
 	font-family: comic Sans MS;
 	font-size: 20px;
@@ -503,7 +504,7 @@ h3#comments,h3#respond {
 
 #footer p {
 	line-height: 31px;
-	color: #fff;
+	color: #000;
 }
 
 #footer p a {
