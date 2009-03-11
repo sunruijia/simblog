@@ -17,7 +17,13 @@ handlers:
 
 - url: /admin
   script: blog.py
-    
+
+- url: /picture/.*
+  script: picture.py 
+
+- url: /picture
+  script: picture.py
+        
 - url: /.*
   script: main.py
   
