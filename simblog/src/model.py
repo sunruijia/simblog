@@ -67,6 +67,12 @@ class Link(db.Model):
     linkName = db.StringProperty(multiline=False,default='')
     linkURL = db.StringProperty(multiline=False,default='')
 
+class Picture(db.Model):
+    picContent = db.BlobProperty()
+    picName = db.StringProperty(multiline=False,default='')
+    picLink = db.StringProperty(multiline=False,default='')
+    thumbnail = db.BlobProperty()
+
 def initBlogSystemData():
     global blogSystem
     blogSystem = BlogSystem(key_name = 'simblog')

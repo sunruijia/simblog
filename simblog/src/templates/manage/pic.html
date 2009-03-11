@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}
+  {{blogSystem.title}}
+{% endblock title %}
+{% block content %} 
+<form action="/picture/upload" method="post" id="post_form" enctype="multipart/form-data"
+	accept-charset="utf-8">
+<h2>{%ifequal action 'edit'%}Edit Picture{%else%}Add Picture {%endifequal%}</h2>
+<div>Picture Name:<br>
+<input type="text" id="picName" name="picName" width="300px" size="50" value="{{pic.picName}}"/>
+</div>
+{%ifequal action 'add'%}
+<div>UpLoad Picture:<br>
+<input type="file" id="pic" name="pic""/>
+</div>
+{%endifequal%}
+<div><br>
+<input type="hidden" value="{{pic.key.id}}" name="id"/>
+<input type="hidden" value="{{action}}" name="action"/>
+<input type="submit" value="Save"></div>
+</form>
+{% endblock content %}
