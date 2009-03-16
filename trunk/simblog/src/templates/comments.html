@@ -1,10 +1,10 @@
 
 {% if blog.commentCount%}
 	<h3 id="comments">{{blog.commentCount}} Responses to &#8220;{{blog.title}}&#8221;</h3>
-	<ol class="commentlist">
+	<ol class="commentlist" id="commentlist">
 	{% for comment in comments %}
 
-		<li class="{%cycle alt1,alt %}" id="comment-{{comment.key.id}}">
+		<li  id="comment-{{comment.key.id}}">
 			<div class="comments"><a href="{{comment.authorURL}}" target="_blank">{{comment.author}}</a> On <small class="commentmetadata"><a href="#comment-{{comment.key.id}}" title="">{{comment.commentTime.date}} at {{comment.commentTime|date:"H:i"}}</a> </small>			
 			<br />
 			<p>{{comment.content}}</p>
@@ -18,7 +18,7 @@
 
 
 <h3 id="respond">Leave your comments</h3>
-<form action="/post_comment" method="post" id="commentform">
+<form action="/post_comment" method="post" id="commentform" name="commentform">
 {%if not self.isAdmin%}
 <label for="author"><small>Name (required)</small></label></p>
 <p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
@@ -40,6 +40,8 @@
 <p><input name="submit" type="submit"  id="submit" tabindex="5" value="Submit Comment" />
 </p>
 <input type="hidden" name="key" value="{{blog.key}}" />
+
+
 </form>
 
 
