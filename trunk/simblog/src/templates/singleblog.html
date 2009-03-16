@@ -1,5 +1,47 @@
 {% extends "base.html" %}
 {% block title %} {{blog.title}} - {{blogsystem.title}} {% endblock title%}
+{% block head_block %}
+<script type="text/JavaScript">
+function addComment2Page()
+{   
+	parent.location.reload();
+   
+   // $("#commentlist li:last").clone().appendTo("#commentlist")
+}
+function validateComment()
+{
+    if($("#commentform :text").fieldValue()[0]!= null)
+    {
+        if ($("#commentform :text").fieldValue()[0]== "")
+        {
+    		alert("Please input your name");
+    		return false;           
+        }
+        value = $("#commentform :textarea").fieldValue()[3];
+    }else
+    {
+    	value = $("#commentform :textarea").fieldValue()[0];
+    }
+	if (value == "")
+	{
+		alert("Please input comment");
+		return false;
+	}
+	return true;
+}
+var options = {
+	    success: addComment2Page,
+	    beforeSubmit: validateComment
+};
+
+
+$(document).ready(function() {
+ $('#commentform').ajaxForm(options);
+});
+
+</script>
+
+{% endblock %}
 {% block content%}
 
 <div class="ctop"></div>
