@@ -95,11 +95,13 @@ class PostCommentHandler(BaseRequestHandler):
             name=self.param('author')
             email=self.param('email')
             url=self.param('url')
-        key=self.param('key')
+        key=self.param('key') 
         content=self.param('comment')
         if (name and content):
+            ##should be removed when deploy to real site
             content = content.decode('utf8')
             name = name.decode('utf8')
+             ##should be removed when deploy to real site
             comment=Comment(author=name,
                             content=content,
                             authorEmail=email,

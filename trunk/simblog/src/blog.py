@@ -1,4 +1,4 @@
-# encoding: utf-8
+﻿# encoding: utf-8
 import wsgiref.handlers
 import os
 import re
