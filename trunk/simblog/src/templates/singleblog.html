@@ -2,12 +2,53 @@
 {% block title %} {{blog.title}} - {{blogsystem.title}} {% endblock title%}
 {% block head_block %}
 <script type="text/JavaScript">
-function addComment2Page()
+function addComment2Page(data)
 {   
-	parent.location.reload();
-   
-   // $("#commentlist li:last").clone().appendTo("#commentlist")
+   alert("Thanks for your comments");
+   if($("#commentlist li:last").html()== null)
+   {
+	   $("#commentlist").append("<li>");
+	   $("#commentlist li:last").append("<div>");
+	   $("#commentlist li:last").append("<div>");
+	   $("#commentlist li:last div:first").append("<a>");
+	   $("#commentlist li:last div:first").append("<small>");
+	   $("#commentlist li:last div:first").append("<br>");
+	   $("#commentlist li:last div:first").append("<p>");
+	   $("#commentlist li:last div:first small").append("<a>");
+
+	   $("#commentlist li:last div a:first").attr("href",data.url);
+	   $("#commentlist li:last div a:first").text(data.author);
+
+	   $("#commentlist li:last div:first small").attr("class","commentmetadata");
+	   $("#commentlist li:last div:last").attr("class","clear");
+	   $("#commentlist li:last div:first").attr("class","comments");
+	   $("#commentlist li:last div:first small").before(" On ");
+	   fillTemplate(data);
+	   
+   }else
+   {
+	   $("#commentlist li:last").clone().appendTo("#commentlist");
+	   fillTemplate(data);
+   }   
 }
+
+function fillTemplate(data)
+{
+	
+	$("#commentlist li:last").attr("id","comment-"+data.id);
+	$("#commentlist li:last div a:first").attr("href",data.url);
+	$("#commentlist li:last div a:first").text(data.author);
+	$("#commentlist li:last div small a:first").attr("href","#comment-"+data.id);
+	$("#commentlist li:last div small a:first").text(data.date+" at "+data.time);
+	if($("#commentform :text").fieldValue()[0]!= null)
+	{
+		$("#commentlist li:last div p").text($("#commentform :textarea").fieldValue()[3]);
+	}else
+	{
+		$("#commentlist li:last div p").text($("#commentform :textarea").fieldValue()[0]);
+	}	 
+}
+
 function validateComment()
 {
     if($("#commentform :text").fieldValue()[0]!= null)
@@ -30,8 +71,9 @@ function validateComment()
 	return true;
 }
 var options = {
-	    success: addComment2Page,
-	    beforeSubmit: validateComment
+		dataType:  'json', 
+		beforeSubmit: validateComment,
+		success: addComment2Page
 };
 
 
