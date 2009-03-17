@@ -1,4 +1,5 @@
-# encoding: utf-8
+﻿# -*- coding: utf-8 -*- 
+
 import os
 import cgi
 import wsgiref.handlers
@@ -14,6 +15,7 @@ from model import Link
 from model import blogSystem
 from model import Comment
 from utility import  *
+from django.utils import simplejson
 
 class BaseRequestHandler(webapp.RequestHandler):
     def generateBasePage(self,template_name,values={},error=0):
@@ -96,13 +98,21 @@ class PostCommentHandler(BaseRequestHandler):
         key=self.param('key')
         content=self.param('comment')
         if (name and content):
+            content = content.decode('utf8')
+            name = name.decode('utf8')
             comment=Comment(author=name,
                             content=content,
                             authorEmail=email,
                             authorURL=url,
                             ownerBlog=Blog.get(key))
             comment.save()
-            self.redirect(Blog.get(key).selfLink)
+            date = comment.commentTime.strftime("%Y-%m-%d");
+            time = comment.commentTime.strftime("%H:%M");
+            commentData = {'author':comment.author,'id':comment.key().id(),'url':comment.authorURL,'date':date,'time':time}
+            self.response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+            
+            self.response.out.write(simplejson.dumps(commentData))
+           # self.redirect(Blog.get(key).selfLink)
         else:
             self.error(501,'Please input name and comment .')
     
