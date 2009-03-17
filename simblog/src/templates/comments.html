@@ -1,6 +1,6 @@
 
-{% if blog.commentCount%}
-	<h3 id="comments">{{blog.commentCount}} Responses to &#8220;{{blog.title}}&#8221;</h3>
+
+	<h3 id="comments">Responses to &#8220;{{blog.title}}&#8221;</h3>
 	<ol class="commentlist" id="commentlist">
 	{% for comment in comments %}
 
@@ -13,12 +13,12 @@
 		</li>
 	{%endfor%}
 	</ol>
-{%endif%}
+
 
 
 
 <h3 id="respond">Leave your comments</h3>
-<form action="/post_comment" method="post" id="commentform" name="commentform">
+<form action="/post_comment" method="post" id="commentform" name="commentform" accept-charset="utf-8">
 {%if not self.isAdmin%}
 <label for="author"><small>Name (required)</small></label></p>
 <p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
