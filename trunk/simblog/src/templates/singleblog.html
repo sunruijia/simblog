@@ -56,6 +56,7 @@ function validateComment()
         if ($("#commentform :text").fieldValue()[0]== "")
         {
     		alert("Please input your name");
+    		$("#label_name small").css({"color":"#ff0000"}); 
     		return false;           
         }
         value = $("#commentform :textarea").fieldValue()[3];
@@ -66,6 +67,7 @@ function validateComment()
 	if (value == "")
 	{
 		alert("Please input comment");
+		$("#label_comment small").css({"color":"#ff0000"}); 
 		return false;
 	}
 	return true;
