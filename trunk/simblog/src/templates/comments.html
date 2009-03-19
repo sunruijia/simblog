@@ -20,22 +20,22 @@
 <h3 id="respond">Leave your comments</h3>
 <form action="/post_comment" method="post" id="commentform" name="commentform" accept-charset="utf-8">
 {%if not self.isAdmin%}
-<label for="author"><small>Name (required)</small></label></p>
-<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<p><label id="label_name" for="author"><small>Name (required)</small></label>
+<input type="text" name="author" id="author" value="" size="22" tabindex="1" /></p>
 
-<label for="email"><small>Mail (will not be published)</small></label></p>
-<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<p><label for="email"><small>Mail (will not be published)</small></label>
+<input type="text" name="email" id="email" value="" size="22" tabindex="2" /></p>
 
-<label for="url"><small>Website</small></label></p>
-<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<p><label for="url"><small>Website</small></label>
+<input type="text" name="url" id="url" value="" size="22" tabindex="3" /></p>
 
 {% if not self.isLogin%}
- <a href="{{self.loginURL}}">Click here to login</a></p>
+ <p><a href="{{self.loginURL}}">Click here to login</a></p><br/>
 {%endif%}
 {%endif%}
 
-
-<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+<p><label id="label_comment" for="comment"><small>Comment</small></label>
+<textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
 
 <p><input name="submit" type="submit"  id="submit" tabindex="5" value="Submit Comment" />
 </p>
