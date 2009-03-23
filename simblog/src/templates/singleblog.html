@@ -57,6 +57,7 @@ function validateComment()
         {
     		alert("Please input your name");
     		$("#label_name small").css({"color":"#ff0000"}); 
+    		$("#author").focus();
     		return false;           
         }
         value = $("#commentform :textarea").fieldValue()[3];
@@ -68,6 +69,7 @@ function validateComment()
 	{
 		alert("Please input comment");
 		$("#label_comment small").css({"color":"#ff0000"}); 
+		$("#comment").focus();
 		return false;
 	}
 	return true;
