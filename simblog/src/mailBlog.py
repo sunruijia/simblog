@@ -16,12 +16,15 @@ from main import *
 
 import model
 from model import Blog
+from model import blogSystem
 
 class check_mail(BaseRequestHandler):
     def post(self):
-        msg = Message(self.request.body)
-        blogEntity = Blog(title = msg.data["email-subject"], content = msg.data["email-text"], createTimeStamp = datetime.now())
-        blogEntity.publish()              
+        sender = self.request.GET.get("from", "")
+        if sender == blogSystem.postEmailAddr:
+            msg = Message(self.request.body)
+            blogEntity = Blog(title = msg.data["email-subject"], content = msg.data["email-text"], createTimeStamp = datetime.now())
+            blogEntity.publish()              
         return
 
 def Main():
