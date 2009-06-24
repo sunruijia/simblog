@@ -47,7 +47,10 @@ class Message:
         if not email_subject:
             self.data["email-subject"] = "Untitled"
         else:
-            self.data["email-subject"] = email_subject[0][0].decode(email_subject[0][1])
+            if not email_subject[0][1]:
+                self.data["email-subject"] = email_subject[0][0]
+            else:
+                self.data["email-subject"] = email_subject[0][0].decode(email_subject[0][1])
         self.payload_data = self._get_payload_data(msg)
         self.data["email-text"] = self.payload_data
         
@@ -56,7 +59,10 @@ class Message:
             payloads = msg.get_payload()
             return self._get_payload_data(payloads[0])
         else:
-            payload_data = msg.get_payload(decode=True).decode(msg.get_param('charset'))  
+            if not msg.get_param('charset'):
+                payload_data = msg.get_payload(decode=True)
+            else:
+                payload_data = msg.get_payload(decode=True).decode(msg.get_param('charset'))  
         return payload_data
     
     
