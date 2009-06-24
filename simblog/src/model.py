@@ -38,6 +38,7 @@ class BlogSystem(db.Model):
     subTitle = db.StringProperty(multiline=False)
     systemURL = db.StringProperty(multiline=False)
     systemDomain = db.StringProperty(multiline=False)
+    postEmailAddr = db.StringProperty(multiline=False)
     feedURL = db.StringProperty(multiline=False)
     posts_per_page= db.IntegerProperty(default=10)
 
