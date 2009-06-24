@@ -84,8 +84,8 @@ class BlogSystemManager(main.BaseRequestHandler):
         return
     @checkAdmin
     def post(self):
-        blogSystem.title,blogSystem.subTitle,blogSystem.systemURL,blogSystem.systemDomain,blogSystem.feedURL = (
-            self.request.get(item) for item in ('title', 'subtitle', 'url', 'domain','feed_url'))
+        blogSystem.title,blogSystem.subTitle,blogSystem.systemURL,blogSystem.systemDomain,blogSystem.feedURL, blogSystem.postEmailAddr = (
+            self.request.get(item) for item in ('title', 'subtitle', 'url', 'domain','feed_url','postEmailAddr'))
         blogSystem.posts_per_page = int(self.request.get( 'posts_per_page'))
         blogSystem.put()
         self.redirect('/admin/config')
