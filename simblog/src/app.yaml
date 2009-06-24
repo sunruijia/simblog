@@ -27,10 +27,6 @@ handlers:
 - url: /check_mail
   script: mailBlog.py
   
-- url: /smtp2web_9e4648d8f6530a98.html
-  static_files: smtp2web_9e4648d8f6530a98.html
-  upload: smtp2web_9e4648d8f6530a98.html  
-        
 - url: /.*
   script: main.py
 
