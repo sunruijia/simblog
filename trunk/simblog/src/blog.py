@@ -18,6 +18,7 @@ from model import Blog
 from model import blogSystem
 from model import Comment
 from model import  Link
+from model import miniBlogSetting
 
 import main
 from utility import  *
@@ -48,6 +49,7 @@ class BasePublicBlog(main.BaseRequestHandler):
             blogEntity = Blog(title = title1, content = content1, createTimeStamp = datetime.now())
             blogEntity.publish()
             self.redirect('/')
+            share2miniblog(blogEntity)
         elif(action=='edit'):
             blogEntity = Blog.get(key)
             blogEntity.title = title1
@@ -89,6 +91,20 @@ class BlogSystemManager(main.BaseRequestHandler):
         blogSystem.posts_per_page = int(self.request.get( 'posts_per_page'))
         blogSystem.put()
         self.redirect('/admin/config')
+        return
+
+class MiniblogManager(main.BaseRequestHandler):
+
+    @checkAdmin
+    def get(self):
+        self.generateBasePage('manage/config.html')      
+        return
+    @checkAdmin
+    def post(self):
+        miniBlogSetting.api,miniBlogSetting.username,miniBlogSetting.password,miniBlogSetting.buzz = (
+            self.request.get(item) for item in ('miniapi', 'username', 'password','buzz'))       
+        miniBlogSetting.put()
+        self.redirect('/admin/configMiniblog')
         return
     
 class BlogCommentManager(main.BaseRequestHandler):
@@ -160,6 +176,7 @@ class BlogLinkManager(main.BaseRequestHandler):
 def Main():
     application = webapp.WSGIApplication([('/admin/', BasePublicBlog),('/admin/post', BasePublicBlog),
                                           ('/admin/blogs',BlogManager),('/admin/config',BlogSystemManager),
+                                          ('/admin/configMiniblog',MiniblogManager),
                                           ('/admin/comments',BlogCommentManager),
                                           ('/admin/links',BlogLinksManager),
                                           ('/admin/link',BlogLinkManager)], debug=True)
