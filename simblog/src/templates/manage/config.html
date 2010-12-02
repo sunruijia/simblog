@@ -45,4 +45,30 @@
 <br/>
 <input type="submit" value="Save Changes" name="Submit"/>
 </form>
+<form method="post" action="/admin/configMiniblog" accept-charset="utf-8" id="config_form">
+<h2>Configuraiton for the MiniBlog You want to share</h2><br/>
+<table>
+   <tr valign="top">
+      <th scope="row">API to Use:</th>
+      <td><input type="text" size="80" value="{{ MiniBlogSettings.api }}"  id="miniapi" name="miniapi"/>
+      </td>
+   </tr>
+   <tr valign="top">
+      <th scope="row">User Name:</th>
+      <td><input type="text" size="20" value="{{ MiniBlogSettings.username }}"  id="username" name="username"/>
+      </td>
+   </tr>
+   <tr valign="top">
+      <th scope="row">Password:</th>
+      <td><input size="20" value="{{ MiniBlogSettings.password }}"  id="password" name="password"/>
+      </td>
+   </tr>
+   <tr valign="top">
+      <th scope="row">Buzz add to Miniblog</th>
+      <td><input size="50" value="{{ MiniBlogSettings.buzz }}"  id="buzz" name="buzz"/>
+      </td>
+   </tr>
+</table>
+<input type="submit" value="Save Changes" name="Submit"/>
+</form>
 {% endblock content %}
