@@ -13,6 +13,7 @@ from google.appengine.ext.webapp import template
 from model import Blog
 from model import Link
 from model import blogSystem
+from model import miniBlogSetting
 from model import Comment
 from utility import  *
 from django.utils import simplejson
@@ -40,7 +41,8 @@ class BaseRequestHandler(webapp.RequestHandler):
         self.isAdmin = users.is_current_user_admin()
         self.template_values = {
             'self':self,                           
-           'blogSystem':blogSystem
+           'blogSystem':blogSystem,
+           'MiniBlogSettings':miniBlogSetting,
             }
     def error(self,errorCode,msg=''):
         if errorCode == 404:
