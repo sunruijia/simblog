@@ -4,6 +4,9 @@ from functools import wraps
 from google.appengine.api import users
 from google.appengine.api import memcache
 from datetime import datetime
+from model import miniBlogSetting
+from model import blogSystem
+from model import Blog
 import email
 import urllib
 import urllib2
@@ -67,18 +70,18 @@ class Message:
                 payload_data = msg.get_payload(decode=True).decode(msg.get_param('charset'))  
         return payload_data
 
-class miniBlogTool:
-    def __init__(self):
-        pass
-    def share2miniblog(self,msg):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        top_level_url="http://api2.fanfou.com/"
-        password_mgr.add_password(None, top_level_url,"sunruijia","xxxxxxx")
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
-        urllib2.install_opener(opener)
-        req = urllib2.Request("http://api2.fanfou.com/statuses/update.xml",urllib.urlencode({"status":msg}))
-        resp = urllib2.urlopen(req)
+def share2miniblog(blogEntity):
+    if (not miniBlogSetting) or (not blogEntity):
+        return
+    link = blogSystem.systemURL+ '/' + blogEntity.selfLink
+    msg =  miniBlogSetting.buzz + ':\n' + link
+    password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    password_mgr.add_password(None, miniBlogSetting.api,miniBlogSetting.username,miniBlogSetting.password)
+    handler = urllib2.HTTPBasicAuthHandler(password_mgr)
+    opener = urllib2.build_opener(handler)
+    urllib2.install_opener(opener)
+    req = urllib2.Request(miniBlogSetting.api,urllib.urlencode({"status":msg}))
+    resp = urllib2.urlopen(req)
       
     
     
