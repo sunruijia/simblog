@@ -41,7 +41,13 @@ class BlogSystem(db.Model):
     postEmailAddr = db.StringProperty(multiline=False)
     feedURL = db.StringProperty(multiline=False)
     posts_per_page= db.IntegerProperty(default=10)
-
+    
+class MiniBlogSettings(db.Model):
+    api = db.StringProperty(multiline=False,default='')
+    username = db.StringProperty(multiline=False,default='')
+    password = db.StringProperty(multiline=False,default='')
+    buzz = db.StringProperty(multiline=False,default='')
+    
 class Comment(db.Model):
     ownerBlog = db.ReferenceProperty(Blog)
     commentTime = db.DateTimeProperty(auto_now_add=True)
@@ -82,12 +88,21 @@ def initBlogSystemData():
     blogSystem.systemDomain = os.environ['HTTP_HOST']
     blogSystem.feedURL = blogSystem.systemURL + "/feed"
     blogSystem.put()
-    
+
+def initMiniblogSetting():
+    global miniBlogSetting
+    miniBlogSetting = MiniBlogSettings(key_name = 'simblog')
+    miniBlogSetting.put()
+        
 def createBlogSystem():
     global blogSystem
+    global miniBlogSetting
     blogSystem = BlogSystem.get_by_key_name('simblog')
+    miniBlogSetting = MiniBlogSettings.get_by_key_name('simblog')
     if not blogSystem:
         initBlogSystemData()
+    if not miniBlogSetting:
+        initMiniblogSetting()
 
 createBlogSystem()
     
