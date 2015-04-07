@@ -1,0 +1,1 @@
+This is a simple blog system base on GAE. Just for google app engine study and for fun.
